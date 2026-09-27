@@ -976,8 +976,8 @@
         body.scrollTop = body.scrollHeight;
       };
 
-      // L7AKAM (Groq) si l'API est configurée — sinon réponse démo
-      if (window.WasselAPI && window.WasselAPI.configured()) {
+      // L7AKAM (Groq) dès que la couche API est chargée — repli démo si l'appel échoue
+      if (window.WasselAPI) {
         addAi("⏳ L7AKAM analyse…");
         window.WasselAPI
           .l7akam([{ role: "user", content: txt }])
