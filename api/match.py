@@ -1,6 +1,8 @@
 """Matching CV ↔ offres. (POST /api/match)"""
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
+import sys, os
+sys.path.insert(0, os.path.dirname(__file__))
 from _core import compute_matches
 
 app = FastAPI()

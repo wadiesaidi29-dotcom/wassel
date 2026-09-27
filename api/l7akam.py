@@ -1,5 +1,7 @@
 """L7AKAM — le médiateur IA (Groq). (POST /api/l7akam)"""
 from fastapi import FastAPI, Request
+import sys, os
+sys.path.insert(0, os.path.dirname(__file__))
 from _core import groq_l7akam
 
 app = FastAPI()
