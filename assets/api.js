@@ -8,10 +8,12 @@
    ============================================================ */
 
 window.WASSEL_CONFIG = {
-  // 1) Backend Python sur Render — ex: "https://wassel-api.onrender.com"
-  //    En local : "http://127.0.0.1:5000" (lance `python app.py` d'abord).
-  //    Vide = mode démo local (aucun appel réseau).
-  API_BASE: "http://127.0.0.1:5000",
+  // 1) Backend IA :
+  //    - En ligne (Vercel) : l'API est sur le même domaine → "" (vide)
+  //    - En local : lance `python app.py` puis l'appel part sur http://127.0.0.1:5000
+  API_BASE: (location.hostname === "127.0.0.1" || location.hostname === "localhost")
+    ? "http://127.0.0.1:5000"
+    : "",
 
   // 2) Supabase — Project Settings → API
   SUPABASE_URL: "",          // ex: "https://abcdefgh.supabase.co"
