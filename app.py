@@ -91,6 +91,16 @@ def cosine(a, b):
 # ------------------------------------------------------------------
 # Routes
 # ------------------------------------------------------------------
+@app.route("/")
+def home():
+    return jsonify({
+        "service": "Wassel API (backend)",
+        "message": "Ceci est l'API — le site est ailleurs. En local : http://127.0.0.1:8741/index.html",
+        "endpoints": ["/api/health", "/api/match", "/api/l7akam", "/api/negotiation"],
+        "groq": bool(GROQ_API_KEY),
+    })
+
+
 @app.route("/api/health")
 def health():
     return jsonify({
