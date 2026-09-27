@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mon espace — Wassel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/style.css?v=2" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%236d5efc'/><path d='M25 32l11 36 14-28 14 28 11-36' stroke='white' stroke-width='7' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>" />
+</head>
+<body class="app-body">
+
+<div class="cursor-dot" id="cursorDot"></div>
+<canvas id="neuralCanvas" class="neural-canvas neural-canvas-dim"></canvas>
+
+<!-- ===== APP NAVBAR ===== -->
+<header class="appbar">
+  <div class="appbar-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">W</span>
+      <span class="brand-name">Wassel<span class="brand-dot">.</span></span>
+    </a>
+    <span class="appbar-scope">Espace <b>candidat</b></span>
+    <nav class="appbar-nav" id="dashTabs">
+      <a href="#" class="app-tab is-active" data-tab="overview">Vue d'ensemble</a>
+      <a href="#" class="app-tab" data-tab="matches">Mes matches</a>
+      <a href="#" class="app-tab" data-tab="applications">Candidatures</a>
+      <a href="#" class="app-tab" data-tab="nego">Négociation</a>
+    </nav>
+    <div class="appbar-actions">
+      <button class="icon-btn" id="notifBtn" aria-label="Notifications"><span class="notif-dot"></span>🔔</button>
+      <div class="user-chip" id="userChip">
+        <span class="user-avatar" id="userAvatar">SA</span>
+        <span class="user-meta">
+          <b id="userName">Salma A.</b>
+          <small id="userRole">Candidat</small>
+        </span>
+      </div>
+      <button class="btn btn-ghost btn-logout" id="logoutBtn">Déconnexion</button>
+    </div>
+  </div>
+</header>
+
+<main class="dash-main">
+  <div class="dash-wrap">
+
+    <!-- ============ TAB : OVERVIEW ============ -->
+    <section class="dash-tab is-active" data-tab="overview">
+
+      <div class="hero-user reveal">
+        <div>
+          <h1 class="dash-hello">Bonjour, <span class="gradient-text" id="helloName">Salma</span> 👋</h1>
+          <p class="dash-hello-sub">Votre profil est <b class="text-green">visible</b> par les entreprises matchées. Voici votre activité.</p>
+        </div>
+        <div class="profile-strength">
+          <div class="strength-ring">
+            <svg viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="52" class="ring-bg" />
+              <circle cx="60" cy="60" r="52" class="ring-fg" id="strengthRing" style="stroke:#34d399" />
+            </svg>
+            <div class="strength-value"><span id="strengthValue">0</span>%</div>
+          </div>
+          <span class="strength-label">Profil complété</span>
+        </div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi-card reveal" data-delay="0">
+          <div class="kpi-icon cyan">🎯</div>
+          <div class="kpi-body"><b class="kpi-num" data-counter="12">0</b><span>Nouveaux matches</span></div>
+          <span class="kpi-trend up">+3</span>
+        </div>
+        <div class="kpi-card reveal" data-delay="1">
+          <div class="kpi-icon violet">📤</div>
+          <div class="kpi-body"><b class="kpi-num" data-counter="4">0</b><span>Candidatures envoyées</span></div>
+        </div>
+        <div class="kpi-card reveal" data-delay="2">
+          <div class="kpi-icon green">🤝</div>
+          <div class="kpi-body"><b class="kpi-num" data-counter="2">0</b><span>Négociations en cours</span></div>
+        </div>
+        <div class="kpi-card reveal" data-delay="3">
+          <div class="kpi-icon amber">👁️</div>
+          <div class="kpi-body"><b class="kpi-num" data-counter="38">0</b><span>Visites de profil</span></div>
+        </div>
+      </div>
+
+      <div class="dash-cols">
+        <div class="dash-panel reveal" data-delay="0">
+          <div class="panel-head">
+            <h3>Mon CV</h3>
+            <span class="panel-badge green">CV_Wassel_2026.pdf · il y a 2 j</span>
+          </div>
+          <div class="cv-zone" id="cvZone" tabindex="0">
+            <input type="file" id="cvInput" accept=".pdf,.doc,.docx" hidden />
+            <div class="cv-zone-icon" id="cvZoneIcon">⬆️</div>
+            <b>Glissez votre CV ici</b>
+            <span>PDF ou Word — l'IA l'analyse en quelques secondes</span>
+          </div>
+        </div>
+
+        <div class="dash-panel reveal" data-delay="1">
+          <div class="panel-head"><h3>Activité récente</h3></div>
+          <div class="activity-list">
+            <div class="activity-item"><span class="activity-icon green">✓</span><p><b>InnovMaroc</b> a consulté votre profil <small>il y a 1 h</small></p></div>
+            <div class="activity-item"><span class="activity-icon violet">🤝</span><p>Négociation ouverte avec <b>DigitalMaroc</b> <small>il y a 3 h</small></p></div>
+            <div class="activity-item"><span class="activity-icon cyan">🎯</span><p>3 nouveaux matches détectés par l'IA <small>hier</small></p></div>
+            <div class="activity-item"><span class="activity-icon amber">📄</span><p>Votre CV a été transmis à <b>TechRabat</b> <small>il y a 2 j</small></p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TAB : MATCHES ============ -->
+    <section class="dash-tab" data-tab="matches">
+      <div class="panel-head-lg">
+        <div>
+          <h1 class="dash-hello">Mes <span class="gradient-text">matches</span></h1>
+          <p class="dash-hello-sub">Classés par score de compatibilité calculé par l'IA.</p>
+        </div>
+        <div class="filter-chips" id="matchFilters">
+          <button class="chip is-active" data-filter="all">Tous</button>
+          <button class="chip" data-filter="high">90 %+</button>
+          <button class="chip" data-filter="mid">70–89 %</button>
+          <button class="chip" data-filter="fav">❤ Favoris</button>
+        </div>
+      </div>
+
+      <div class="match-list" id="matchList">
+        <article class="match-row reveal" data-score="93" data-fav="true">
+          <div class="match-logo lm-cyan">IN</div>
+          <div class="match-body">
+            <h4>InnovMaroc <span class="match-score-badge high">93%</span></h4>
+            <p>Data Analyst · Casablanca · Hybride · 12–16k DH</p>
+            <div class="match-tags"><span>Python</span><span>SQL</span><span>Power BI</span></div>
+          </div>
+          <button class="fav-btn is-fav" aria-label="Favori">❤</button>
+          <button class="btn btn-primary btn-sm" data-apply="InnovMaroc">Candidater</button>
+        </article>
+
+        <article class="match-row reveal" data-score="88">
+          <div class="match-logo lm-violet">DM</div>
+          <div class="match-body">
+            <h4>DigitalMaroc <span class="match-score-badge high">88%</span></h4>
+            <p>Data Analyst · Rabat · Télétravail · 10–14k DH</p>
+            <div class="match-tags"><span>SQL</span><span>Tableau</span></div>
+          </div>
+          <button class="fav-btn" aria-label="Favori">🤍</button>
+          <button class="btn btn-outline btn-sm" data-apply="DigitalMaroc">Candidater</button>
+        </article>
+
+        <article class="match-row reveal" data-score="81">
+          <div class="match-logo lm-green">AT</div>
+          <div class="match-body">
+            <h4>AtlasTech <span class="match-score-badge mid">81%</span></h4>
+            <p>BI Analyst · Tanger · Présentiel · 9–12k DH</p>
+            <div class="match-tags"><span>Python</span><span>Excel</span></div>
+          </div>
+          <button class="fav-btn" aria-label="Favori">🤍</button>
+          <button class="btn btn-outline btn-sm" data-apply="AtlasTech">Candidater</button>
+        </article>
+
+        <article class="match-row reveal" data-score="74">
+          <div class="match-logo lm-amber">NG</div>
+          <div class="match-body">
+            <h4>NexusGroup <span class="match-score-badge mid">74%</span></h4>
+            <p>Analyste Marketing · Casablanca · Hybride · 8–11k DH</p>
+            <div class="match-tags"><span>SEO</span><span>Analytics</span></div>
+          </div>
+          <button class="fav-btn" aria-label="Favori">🤍</button>
+          <button class="btn btn-outline btn-sm" data-apply="NexusGroup">Candidater</button>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ TAB : APPLICATIONS ============ -->
+    <section class="dash-tab" data-tab="applications">
+      <div class="panel-head-lg">
+        <div>
+          <h1 class="dash-hello">Mes <span class="gradient-text">candidatures</span></h1>
+          <p class="dash-hello-sub">Suivez le statut de chaque envoi en temps réel.</p>
+        </div>
+      </div>
+
+      <div class="timeline-panel reveal">
+        <div class="app-track">
+          <div class="track-row">
+            <div class="track-company"><div class="match-logo lm-cyan sm">IN</div><div><b>InnovMaroc</b><small>Data Analyst · Casablanca</small></div></div>
+            <div class="track-steps">
+              <span class="t-step done" title="Envoyée">✓</span><span class="t-line done"></span>
+              <span class="t-step done" title="Vue par l'entreprise">✓</span><span class="t-line done"></span>
+              <span class="t-step active" title="En négociation">🤝</span><span class="t-line"></span>
+              <span class="t-step" title="Acceptée">•</span>
+            </div>
+            <span class="status-pill negotiating">En négociation</span>
+          </div>
+
+          <div class="track-row">
+            <div class="track-company"><div class="match-logo lm-violet sm">DM</div><div><b>DigitalMaroc</b><small>Data Analyst · Rabat</small></div></div>
+            <div class="track-steps">
+              <span class="t-step done">✓</span><span class="t-line done"></span>
+              <span class="t-step active" title="Vue">👁</span><span class="t-line"></span>
+              <span class="t-step">•</span><span class="t-line"></span>
+              <span class="t-step">•</span>
+            </div>
+            <span class="status-pill viewed">Vue par l'entreprise</span>
+          </div>
+
+          <div class="track-row">
+            <div class="track-company"><div class="match-logo lm-green sm">AT</div><div><b>AtlasTech</b><small>BI Analyst · Tanger</small></div></div>
+            <div class="track-steps">
+              <span class="t-step active" title="Envoyée">📤</span><span class="t-line"></span>
+              <span class="t-step">•</span><span class="t-line"></span>
+              <span class="t-step">•</span><span class="t-line"></span>
+              <span class="t-step">•</span>
+            </div>
+            <span class="status-pill sent">Envoyée</span>
+          </div>
+
+          <div class="track-row">
+            <div class="track-company"><div class="match-logo lm-amber sm">TR</div><div><b>TechRabat</b><small>Data Analyst · Rabat</small></div></div>
+            <div class="track-steps">
+              <span class="t-step done">✓</span><span class="t-line done"></span>
+              <span class="t-step done">✓</span><span class="t-line done"></span>
+              <span class="t-step done">🤝</span><span class="t-line done"></span>
+              <span class="t-step done success">✓</span>
+            </div>
+            <span class="status-pill accepted">Accord trouvé</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TAB : NEGOTIATION ============ -->
+    <section class="dash-tab" data-tab="nego">
+      <div class="panel-head-lg">
+        <div>
+          <h1 class="dash-hello">Chambre de <span class="gradient-text">négociation</span></h1>
+          <p class="dash-hello-sub">L'IA révèle la zone d'accord — vous décidez du chiffre final.</p>
+        </div>
+      </div>
+
+      <div class="nego-room">
+        <div class="nego-card reveal" data-delay="0">
+          <div class="nego-card-head"><span class="nego-dot candidate-dot"></span> Votre minimum <small>(confidentiel)</small></div>
+          <div class="nego-amount" id="candMinVal">7 500 DH</div>
+          <input type="range" id="candMin" min="4000" max="20000" step="500" value="7500" />
+          <div class="nego-hint">L'entreprise ne voit jamais ce chiffre — seulement la zone d'accord.</div>
+        </div>
+
+        <div class="nego-card reveal" data-delay="1">
+          <div class="nego-card-head"><span class="nego-dot company-dot"></span> Budget signalé par DigitalMaroc <small>(estimation IA)</small></div>
+          <div class="nego-amount violet">≈ 10 000 DH</div>
+          <div class="nego-hint">Basé sur les offres publiées de l'entreprise.</div>
+        </div>
+
+        <div class="nego-verdict-card reveal" data-delay="2">
+          <div class="overlap-visual">
+            <div class="overlap-bar"><div class="zone-overlap" id="candZone" style="left:29%;width:16%"></div></div>
+            <div class="overlap-scale"><span>4k</span><span>8k</span><span>12k</span><span>16k</span><span>20k</span></div>
+          </div>
+          <div class="verdict-main">
+            <div class="verdict-badge ok" id="candVerdict">✓ Zone d'accord détectée</div>
+            <p class="verdict-text">L'IA propose un point médian à titre <b>indicatif</b> : <span class="gradient-text" id="candMedian"><b>8 750 DH</b></span></p>
+            <div class="verdict-actions">
+              <button class="btn btn-primary" id="acceptMedian">Accepter 8 750 DH</button>
+              <button class="btn btn-outline" id="openChat">💬 Discuter dans le chat</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-panel reveal" data-delay="2" id="chatPanel">
+        <div class="chat-head"><span class="chat-ai-avatar">🤖</span> Chat de négociation — DigitalMaroc <span class="chat-live"></span></div>
+        <div class="chat-body" id="chatBody">
+          <div class="msg msg-them"><b>DigitalMaroc</b><p>Bonjour Salma, votre profil nous intéresse beaucoup. Êtes-vous flexible sur le mode hybride ?</p></div>
+          <div class="msg msg-me"><b>Vous</b><p>Bonjour ! Oui, 2 jours sur site par semaine me conviennent.</p></div>
+          <div class="msg msg-ai"><b>Médiateur IA</b><span>Zone d'accord détectée : 7 500 – 10 000 DH. Point médian indicatif : 8 750 DH. La décision finale vous appartient.</span></div>
+        </div>
+        <div class="chat-input">
+          <input type="text" id="chatInput" placeholder="Écrire un message…" />
+          <button class="btn btn-primary btn-sm" id="chatSend">Envoyer</button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<!-- toast -->
+<div class="toast" id="toast"><span class="toast-icon">✓</span><span id="toastMsg">—</span></div>
+
+<script src="assets/api.js?v=1"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

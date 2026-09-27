@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Créer un compte — Wassel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/style.css?v=2" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%236d5efc'/><path d='M25 32l11 36 14-28 14 28 11-36' stroke='white' stroke-width='7' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>" />
+</head>
+<body class="auth-body">
+
+<div class="cursor-dot" id="cursorDot"></div>
+<canvas id="neuralCanvas" class="neural-canvas"></canvas>
+
+<div class="auth-layout">
+  <!-- Left : brand panel -->
+  <aside class="auth-aside">
+    <div class="auth-glow auth-glow-1"></div>
+    <div class="auth-glow auth-glow-2"></div>
+    <a class="brand auth-brand" href="index.html">
+      <span class="brand-mark">W</span>
+      <span class="brand-name">Wassel<span class="brand-dot">.</span></span>
+    </a>
+    <h2 class="auth-aside-title">L'IA vous <span class="gradient-text">relie</span>.<br />Vous décidez.</h2>
+    <p class="auth-aside-sub">
+      Créez votre compte en moins d'une minute. Gratuit et illimité pour les candidats,
+      10 jours d'essai pour les entreprises.
+    </p>
+
+    <div class="auth-aside-points">
+      <div class="aside-point reveal" data-delay="0"><span class="point-icon">⚡</span> Matching instantané par IA</div>
+      <div class="aside-point reveal" data-delay="1"><span class="point-icon">🤝</span> Négociation assistée, jamais imposée</div>
+      <div class="aside-point reveal" data-delay="2"><span class="point-icon">🇲🇦</span> Pensé pour le marché marocain</div>
+    </div>
+
+    <div class="auth-aside-visual" aria-hidden="true">
+      <div class="mini-core"><span></span><span></span><span></span></div>
+    </div>
+  </aside>
+
+  <!-- Right : form -->
+  <main class="auth-main">
+    <div class="auth-card" id="authCard">
+      <div class="auth-progress"><span id="authProgressBar"></span></div>
+
+      <!-- STEP 1 : role -->
+      <section class="auth-step is-active" data-step="1">
+        <h1 class="auth-title">Qui êtes-vous ?</h1>
+        <p class="auth-sub">Votre parcours commence ici — choisissez votre espace.</p>
+
+        <div class="role-cards">
+          <button class="role-card" data-role="candidat" type="button">
+            <span class="role-icon">👤</span>
+            <span class="role-name">Candidat</span>
+            <span class="role-desc">Je cherche un emploi. 100 % gratuit, accès illimité.</span>
+            <span class="role-check">✓</span>
+          </button>
+          <button class="role-card" data-role="entreprise" type="button">
+            <span class="role-flag">Essai 10 jours</span>
+            <span class="role-icon">🏢</span>
+            <span class="role-name">Entreprise</span>
+            <span class="role-desc">Je recrute. Accès aux CV matchés, abonnement ensuite.</span>
+            <span class="role-check">✓</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- STEP 2 : account -->
+      <section class="auth-step" data-step="2">
+        <h1 class="auth-title">Votre compte <span class="role-pill" id="rolePill">Candidat</span></h1>
+        <p class="auth-sub">Quelques informations et vous êtes dans l'espace <span id="roleEcho">candidat</span>.</p>
+
+        <form id="accountForm" novalidate>
+          <div class="field">
+            <input type="text" id="accName" placeholder=" " required autocomplete="name" />
+            <label for="accName">Nom complet / Entreprise</label>
+            <span class="field-line"></span>
+          </div>
+          <div class="field">
+            <input type="email" id="accEmail" placeholder=" " required autocomplete="email" />
+            <label for="accEmail">Adresse e-mail</label>
+            <span class="field-line"></span>
+          </div>
+          <div class="field">
+            <input type="password" id="accPass" placeholder=" " required minlength="6" autocomplete="new-password" />
+            <label for="accPass">Mot de passe</label>
+            <span class="field-line"></span>
+            <div class="pass-strength"><span id="passStrengthBar"></span></div>
+          </div>
+
+          <div class="form-row">
+            <button class="btn btn-ghost" type="button" id="backToRole">← Retour</button>
+            <button class="btn btn-primary" type="submit" id="toTrial">Continuer <span class="btn-arrow">→</span></button>
+          </div>
+        </form>
+      </section>
+
+      <!-- STEP 3a : trial summary (entreprise) -->
+      <section class="auth-step" data-step="3-entreprise">
+        <h1 class="auth-title">Votre essai de <span class="gradient-text">10 jours</span></h1>
+        <p class="auth-sub">Voici ce que couvre votre essai gratuit — sans carte bancaire.</p>
+
+        <div class="trial-timeline">
+          <div class="trial-day"><span class="day-dot"></span><div><strong>Jours 1–2</strong><em>Publication d'offres + analyse des premiers CV matchés</em></div></div>
+          <div class="trial-day"><span class="day-dot"></span><div><strong>Jours 3–7</strong><em>Filtrage par score, contact avec jusqu'à 2 candidats</em></div></div>
+          <div class="trial-day"><span class="day-dot"></span><div><strong>Jours 8–10</strong><em>Chambre de négociation + statistiques complètes</em></div></div>
+        </div>
+
+        <div class="cancel-note">
+          <span class="cancel-icon">ℹ️</span>
+          Bouton d'annulation visible à tout moment dans les paramètres du compte, avec confirmation animée. Aucun prélèvement pendant l'essai.
+        </div>
+
+        <div class="form-row form-row-single">
+          <button class="btn btn-primary btn-lg btn-block" type="button" id="finishEntreprise">Créer mon espace entreprise <span class="btn-arrow">→</span></button>
+        </div>
+      </section>
+
+      <!-- STEP 3b : success -->
+      <section class="auth-step auth-success" data-step="4">
+        <div class="success-check">
+          <svg viewBox="0 0 80 80">
+            <circle cx="40" cy="40" r="36" class="check-circle" />
+            <path d="M24 41 L35 52 L57 30" class="check-mark" />
+          </svg>
+        </div>
+        <h1 class="auth-title">Bienvenue sur Wassel, <span class="gradient-text" id="successName">vous</span> !</h1>
+        <p class="auth-sub" id="successText">Votre espace est prêt. Direction le tableau de bord…</p>
+        <div class="loading-rail"><span></span></div>
+      </section>
+    </div>
+
+    <p class="auth-switch">Déjà un compte ? <a href="login.html">Se connecter</a></p>
+  </main>
+</div>
+
+<script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Espace entreprise — Wassel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/style.css?v=2" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%236d5efc'/><path d='M25 32l11 36 14-28 14 28 11-36' stroke='white' stroke-width='7' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>" />
+</head>
+<body class="app-body">
+
+<div class="cursor-dot" id="cursorDot"></div>
+<canvas id="neuralCanvas" class="neural-canvas neural-canvas-dim"></canvas>
+
+<!-- trial banner -->
+<div class="trial-banner" id="trialBanner">
+  <span class="trial-pill">⚡ Essai gratuit</span>
+  <span>Jour <b id="trialDay">3</b> sur 10 — <span id="trialRemaining">7 jours restants</span></span>
+  <div class="trial-progress"><span id="trialBar"></span></div>
+  <button class="btn btn-ghost btn-sm" id="manageSubBtn">Gérer l'abonnement</button>
+</div>
+
+<!-- ===== APP NAVBAR ===== -->
+<header class="appbar">
+  <div class="appbar-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">W</span>
+      <span class="brand-name">Wassel<span class="brand-dot">.</span></span>
+    </a>
+    <span class="appbar-scope">Espace <b>entreprise</b></span>
+    <nav class="appbar-nav" id="dashTabs">
+      <a href="#" class="app-tab is-active" data-tab="overview">Vue d'ensemble</a>
+      <a href="#" class="app-tab" data-tab="cvs">CV matchés</a>
+      <a href="#" class="app-tab" data-tab="offers">Mes offres</a>
+      <a href="#" class="app-tab" data-tab="nego">Négociations</a>
+    </nav>
+    <div class="appbar-actions">
+      <div class="user-chip" id="userChip">
+        <span class="user-avatar violet" id="userAvatar">IN</span>
+        <span class="user-meta">
+          <b id="userName">InnovMaroc</b>
+          <small id="userRole">Entreprise</small>
+        </span>
+      </div>
+      <button class="btn btn-ghost btn-logout" id="logoutBtn">Déconnexion</button>
+    </div>
+  </div>
+</header>
+
+<main class="dash-main">
+  <div class="dash-wrap">
+
+    <!-- ============ TAB : OVERVIEW ============ -->
+    <section class="dash-tab is-active" data-tab="overview">
+
+      <div class="hero-user reveal">
+        <div>
+          <h1 class="dash-hello">Bonjour, <span class="gradient-text" id="helloName">InnovMaroc</span> 👋</h1>
+          <p class="dash-hello-sub"><b class="text-violet">12 nouveaux CV</b> matchés cette semaine. 2 négociations en cours.</p>
+        </div>
+        <div class="sub-status-card">
+          <div class="sub-row"><span>Abonnement</span><b class="text-green">Essai gratuit</b></div>
+          <div class="sub-row"><span>Renouvellement</span><b id="renewDate">—</b></div>
+          <div class="sub-row"><span>Contactés ce mois</span><b>2 / 2 candidats</b></div>
+          <button class="btn btn-outline btn-sm btn-block" id="cancelSubBtn">Annuler l'abonnement</button>
+        </div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi-card reveal" data-delay="0">
+          <div class="kpi-icon cyan">📥</div>
+          <div class="kpi-body"><b class="kpi-num" data-counter="47">0</b><span>CV matchés reçus</span></div>
+          <span class="kpi-trend up">+12</span>
+        </div>
+        <div class="kpi-card reveal" data-delay="1">
+          <div class="kpi-icon violet">👁️</div>
+          <div class="kpi-body"><b class="kpi-num" data-counter="19">0</b><span>Profils consultés</span></div>
+        </div>
+        <div class="kpi-card reveal" data-delay="2">
+          <div class="kpi-icon green">🤝</div>
+          <div class="kpi-body"><b class="kpi-num" data-counter="2">0</b><span>Négociations en cours</span></div>
+        </div>
+        <div class="kpi-card reveal" data-delay="3">
+          <div class="kpi-icon amber">⏱️</div>
+          <div class="kpi-body"><b class="kpi-num" data-counter="6">0</b><span>jours pour trouver</span></div>
+        </div>
+      </div>
+
+      <div class="dash-cols">
+        <div class="dash-panel reveal" data-delay="0">
+          <div class="panel-head"><h3>Top matches du moment</h3><a href="#" class="panel-link" data-goto="cvs">Tout voir →</a></div>
+          <div class="mini-candidate">
+            <span class="user-avatar cyan">SA</span>
+            <div class="mini-cand-body"><b>Salma A. <em class="match-score-badge high">93%</em></b><small>Data Analyst · Casablanca</small></div>
+            <button class="btn btn-primary btn-sm" data-contact="Salma A.">Contacter</button>
+          </div>
+          <div class="mini-candidate">
+            <span class="user-avatar violet">YB</span>
+            <div class="mini-cand-body"><b>Youssef B. <em class="match-score-badge mid">84%</em></b><small>Data Analyst · Rabat</small></div>
+            <button class="btn btn-outline btn-sm" data-contact="Youssef B.">Contacter</button>
+          </div>
+        </div>
+
+        <div class="dash-panel reveal" data-delay="1">
+          <div class="panel-head"><h3>Statistiques</h3></div>
+          <div class="bars-visual">
+            <div class="bar-col"><div class="bar" style="--h:45%"></div><span>L</span></div>
+            <div class="bar-col"><div class="bar" style="--h:70%"></div><span>M</span></div>
+            <div class="bar-col"><div class="bar" style="--h:38%"></div><span>M</span></div>
+            <div class="bar-col"><div class="bar" style="--h:88%"></div><span>J</span></div>
+            <div class="bar-col"><div class="bar" style="--h:62%"></div><span>V</span></div>
+            <div class="bar-col"><div class="bar" style="--h:30%"></div><span>S</span></div>
+            <div class="bar-col"><div class="bar" style="--h:22%"></div><span>D</span></div>
+          </div>
+          <p class="bars-caption">CV consultés cette semaine</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TAB : CVS ============ -->
+    <section class="dash-tab" data-tab="cvs">
+      <div class="panel-head-lg">
+        <div>
+          <h1 class="dash-hello">CV <span class="gradient-text">matchés</span></h1>
+          <p class="dash-hello-sub">Filtrez par score, compétence ou région — l'IA a déjà classé.</p>
+        </div>
+        <div class="filter-chips" id="cvFilters">
+          <button class="chip is-active" data-filter="all">Tous</button>
+          <button class="chip" data-filter="high">90 %+</button>
+          <button class="chip" data-filter="mid">70–89 %</button>
+        </div>
+      </div>
+
+      <div class="cvs-tools">
+        <input type="text" class="search-input" id="cvSearch" placeholder="🔎 Compétence ou région (ex : Python, Casablanca)…" />
+        <span class="cvs-count" id="cvCount">4 profils</span>
+      </div>
+
+      <div class="cv-grid" id="cvGrid">
+        <article class="cv-card reveal" data-score="93" data-tags="python sql casablanca power bi">
+          <div class="cv-card-head">
+            <span class="user-avatar cyan">SA</span>
+            <em class="match-score-badge high">93%</em>
+          </div>
+          <h4>Salma A.</h4>
+          <p class="cv-role">Data Analyst · Casablanca</p>
+          <div class="match-tags"><span>Python</span><span>SQL</span><span>Power BI</span></div>
+          <div class="cv-card-actions">
+            <button class="btn btn-primary btn-sm" data-contact="Salma A.">Contacter</button>
+            <button class="btn btn-ghost btn-sm" data-cv="Salma">Voir CV</button>
+          </div>
+        </article>
+
+        <article class="cv-card reveal" data-score="84" data-tags="sql tableau rabat python">
+          <div class="cv-card-head">
+            <span class="user-avatar violet">YB</span>
+            <em class="match-score-badge mid">84%</em>
+          </div>
+          <h4>Youssef B.</h4>
+          <p class="cv-role">Data Analyst · Rabat</p>
+          <div class="match-tags"><span>SQL</span><span>Tableau</span></div>
+          <div class="cv-card-actions">
+            <button class="btn btn-outline btn-sm" data-contact="Youssef B.">Contacter</button>
+            <button class="btn btn-ghost btn-sm" data-cv="Youssef">Voir CV</button>
+          </div>
+        </article>
+
+        <article class="cv-card reveal" data-score="78" data-tags="excel sql tanger bi">
+          <div class="cv-card-head">
+            <span class="user-avatar green">KM</span>
+            <em class="match-score-badge mid">78%</em>
+          </div>
+          <h4>Khadija M.</h4>
+          <p class="cv-role">BI Analyst · Tanger</p>
+          <div class="match-tags"><span>Excel</span><span>SQL</span></div>
+          <div class="cv-card-actions">
+            <button class="btn btn-outline btn-sm" data-contact="Khadija M.">Contacter</button>
+            <button class="btn btn-ghost btn-sm" data-cv="Khadija">Voir CV</button>
+          </div>
+        </article>
+
+        <article class="cv-card reveal" data-score="91" data-tags="python ml casablanca remote">
+          <div class="cv-card-head">
+            <span class="user-avatar amber">OE</span>
+            <em class="match-score-badge high">91%</em>
+          </div>
+          <h4>Omar E.</h4>
+          <p class="cv-role">ML Engineer · Casablanca</p>
+          <div class="match-tags"><span>Python</span><span>ML</span></div>
+          <div class="cv-card-actions">
+            <button class="btn btn-outline btn-sm" data-contact="Omar E.">Contacter</button>
+            <button class="btn btn-ghost btn-sm" data-cv="Omar">Voir CV</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ TAB : OFFERS ============ -->
+    <section class="dash-tab" data-tab="offers">
+      <div class="panel-head-lg">
+        <div>
+          <h1 class="dash-hello">Mes <span class="gradient-text">offres</span></h1>
+          <p class="dash-hello-sub">Hors matching automatique — publiez une offre si besoin.</p>
+        </div>
+        <button class="btn btn-primary" id="newOfferBtn">+ Nouvelle offre</button>
+      </div>
+
+      <div class="offer-list">
+        <article class="offer-row reveal">
+          <div class="offer-body">
+            <h4>Data Analyst <span class="status-pill open">Ouverte</span></h4>
+            <p>Casablanca · Hybride · 12–16k DH</p>
+            <div class="offer-stats"><span>📥 47 CV</span><span>👁 19 vues</span><span>🤝 2 négociations</span></div>
+          </div>
+          <button class="btn btn-ghost btn-sm" data-offer-edit>Modifier</button>
+        </article>
+        <article class="offer-row reveal" data-delay="1">
+          <div class="offer-body">
+            <h4>Data Engineer <span class="status-pill draft">Brouillon</span></h4>
+            <p>Casablanca · Télétravail · 15–20k DH</p>
+            <div class="offer-stats"><span>Non publiée</span></div>
+          </div>
+          <button class="btn btn-outline btn-sm" data-offer-publish>Publier</button>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ TAB : NEGOTIATIONS ============ -->
+    <section class="dash-tab" data-tab="nego">
+      <div class="panel-head-lg">
+        <div>
+          <h1 class="dash-hello">Chambre de <span class="gradient-text">négociation</span></h1>
+          <p class="dash-hello-sub">Saisissez votre budget maximum — l'IA révèle la zone d'accord.</p>
+        </div>
+      </div>
+
+      <div class="nego-room">
+        <div class="nego-card reveal" data-delay="0">
+          <div class="nego-card-head"><span class="nego-dot company-dot"></span> Votre budget maximum <small>(confidentiel)</small></div>
+          <div class="nego-amount violet" id="compMaxVal">10 000 DH</div>
+          <input type="range" id="compMax" min="4000" max="20000" step="500" value="10000" />
+          <div class="nego-hint">Le candidat ne voit jamais ce chiffre — seulement la zone d'accord.</div>
+        </div>
+
+        <div class="nego-card reveal" data-delay="1">
+          <div class="nego-card-head"><span class="nego-dot candidate-dot"></span> Prétention de Salma A. <small>(estimation IA)</small></div>
+          <div class="nego-amount">≈ 7 500 DH</div>
+          <div class="nego-hint">Basée sur son questionnaire et le marché.</div>
+        </div>
+
+        <div class="nego-verdict-card reveal" data-delay="2">
+          <div class="overlap-visual">
+            <div class="overlap-bar"><div class="zone-overlap" id="compZone" style="left:29%;width:16%"></div></div>
+            <div class="overlap-scale"><span>4k</span><span>8k</span><span>12k</span><span>16k</span><span>20k</span></div>
+          </div>
+          <div class="verdict-main">
+            <div class="verdict-badge ok" id="compVerdict">✓ Zone d'accord détectée</div>
+            <p class="verdict-text">Point médian proposé par l'IA (indicatif) : <span class="gradient-text" id="compMedian"><b>8 750 DH</b></span></p>
+            <div class="verdict-actions">
+              <button class="btn btn-primary" id="compAccept">Accepter 8 750 DH</button>
+              <button class="btn btn-outline" id="compAgreement">📄 Générer le résumé d'accord</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="agreement-panel reveal" id="agreementPanel" hidden>
+        <div class="agreement-doc">
+          <div class="agreement-head">
+            <span class="brand-mark sm">W</span>
+            <div><b>Résumé d'accord de principe</b><small>Généré par Wassel — non contractuel</small></div>
+            <span class="status-pill accepted">Accord trouvé</span>
+          </div>
+          <dl class="agreement-fields">
+            <div><dt>Poste</dt><dd>Data Analyst</dd></div>
+            <div><dt>Salaire convenu</dt><dd class="text-green">8 750 DH brut/mois</dd></div>
+            <div><dt>Date de début</dt><dd>1 novembre 2026</dd></div>
+            <div><dt>Modalités</dt><dd>Hybride — 2 j sur site / semaine</dd></div>
+            <div><dt>Entreprise</dt><dd>InnovMaroc</dd></div>
+            <div><dt>Candidat</dt><dd>Salma A.</dd></div>
+          </dl>
+          <p class="agreement-disclaimer">
+            Ce document est un résumé de l'accord entre les parties. Il ne constitue pas un contrat de travail légal —
+            la formalisation doit être faite par le service RH de l'entreprise conformément au droit du travail marocain.
+          </p>
+          <button class="btn btn-primary" id="downloadAgreement">⬇ Télécharger le résumé (PDF)</button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<!-- ===== CANCEL MODAL ===== -->
+<div class="modal" id="cancelModal" hidden>
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-card">
+    <div class="modal-icon">⚠️</div>
+    <h3>Annuler l'abonnement ?</h3>
+    <p>Vous perdrez l'accès aux CV matchés dès la fin de votre essai, le <b id="modalEndDate">—</b>. Confirmez votre choix :</p>
+    <div class="modal-actions">
+      <button class="btn btn-outline" data-close>Continuer l'essai</button>
+      <button class="btn btn-danger" id="confirmCancel">Oui, annuler</button>
+    </div>
+  </div>
+</div>
+
+<!-- toast -->
+<div class="toast" id="toast"><span class="toast-icon">✓</span><span id="toastMsg">—</span></div>
+
+<script src="assets/api.js?v=1"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

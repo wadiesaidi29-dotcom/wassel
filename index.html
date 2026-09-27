@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Wassel — Le recrutement par l'IA, pour le Maroc</title>
+<meta name="description" content="Wassel connecte les candidats et les entreprises marocaines grâce à un matching par IA, avec une chambre de négociation assistée et un résumé d'accord généré automatiquement." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/style.css?v=2" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%236d5efc'/><path d='M25 32l11 36 14-28 14 28 11-36' stroke='white' stroke-width='7' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>" />
+</head>
+<body>
+
+<div class="cursor-dot" id="cursorDot"></div>
+<canvas id="neuralCanvas" class="neural-canvas"></canvas>
+
+<!-- ===== PRELOADER ===== -->
+<div class="preloader" id="preloader">
+  <div class="preloader-inner">
+    <div class="preloader-logo"><span>W</span></div>
+    <div class="preloader-bar"><span></span></div>
+    <p class="preloader-text">Initialisation du moteur de matching…</p>
+  </div>
+  <div class="preloader-status" id="preloaderStatus">Analyse sémantique des CV</div>
+</div>
+
+<!-- ===== NAVBAR ===== -->
+<header class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">W</span>
+      <span class="brand-name">Wassel<span class="brand-dot">.</span></span>
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#tech">Technologie</a>
+      <a href="#process">Processus</a>
+      <a href="#negotiation">Négociation</a>
+      <a href="#pricing">Tarifs</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="login.html" class="btn btn-ghost">Connexion</a>
+      <a href="signup.html" class="btn btn-primary" data-magnetic>Commencer <span class="btn-arrow">→</span></a>
+    </div>
+    <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main>
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-bg-grid" data-parallax="0.06"></div>
+  <div class="hero-glow hero-glow-1"></div>
+  <div class="hero-glow hero-glow-2"></div>
+
+  <div class="container hero-container">
+    <div class="hero-left">
+      <div class="hero-badge reveal">
+        <span class="pulse-dot"></span>
+        Matching par IA · Conçu pour le Maroc
+      </div>
+      <h1 class="hero-title">
+        <span class="hero-line"><span class="hero-word">Votre</span> <span class="hero-word">prochain</span></span>
+        <span class="hero-line"><span class="hero-word gradient-text">emploi</span> <span class="hero-word">vous</span></span>
+        <span class="hero-line"><span class="hero-word">trouve.</span></span>
+      </h1>
+      <p class="hero-sub reveal" data-delay="1">
+        Wassel relie directement les <strong>candidats</strong> et les <strong>entreprises marocaines</strong>
+        grâce à un matching par IA — du dépôt du CV jusqu'à l'accord final.
+        L'IA <em>propose</em>, les humains <em>décident</em>.
+      </p>
+      <div class="hero-actions reveal" data-delay="2">
+        <a href="signup.html?role=candidat" class="btn btn-primary btn-lg" data-magnetic>
+          Je cherche un emploi <span class="btn-arrow">→</span>
+        </a>
+        <a href="signup.html?role=entreprise" class="btn btn-outline btn-lg" data-magnetic>
+          Je recrute
+        </a>
+      </div>
+      <div class="hero-stats reveal" data-delay="3">
+        <div class="stat">
+          <div class="stat-num"><span data-counter="94">0</span>%</div>
+          <div class="stat-label">de compatibilité détectée</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num"><span data-counter="10">0</span> j</div>
+          <div class="stat-label">d'essai gratuit entreprise</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num"><span data-counter="0">0</span> DH</div>
+          <div class="stat-label">pour les candidats, toujours</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero visual : two profiles finding each other through the AI core -->
+    <div class="hero-right" id="matchScene" data-parallax="0.09">
+      <div class="match-scene">
+        <div class="orbit orbit-1"></div>
+        <div class="orbit orbit-2"></div>
+        <div class="orbit orbit-3"></div>
+
+        <div class="ai-core" id="aiCore">
+          <div class="ai-core-ring"></div>
+          <div class="ai-core-ring ring-2"></div>
+          <div class="ai-core-ring ring-3"></div>
+          <div class="ai-core-label">IA · Wassel</div>
+          <span class="core-particle"></span>
+          <span class="core-particle"></span>
+          <span class="core-particle"></span>
+          <span class="core-particle"></span>
+          <span class="core-particle"></span>
+          <span class="core-particle"></span>
+        </div>
+
+        <div class="profile-card profile-candidate" id="cardCandidate">
+          <div class="profile-avatar candidate-avatar">SA</div>
+          <div class="profile-info">
+            <div class="profile-name">Salma A.</div>
+            <div class="profile-role">Data Analyst · Casablanca</div>
+            <div class="profile-tags">
+              <span>Python</span><span>SQL</span><span>Hybride</span>
+            </div>
+          </div>
+          <div class="profile-ping"></div>
+        </div>
+
+        <div class="profile-card profile-company" id="cardCompany">
+          <div class="profile-avatar company-avatar">IN</div>
+          <div class="profile-info">
+            <div class="profile-name">InnovMaroc</div>
+            <div class="profile-role">Cherche : Data Analyst</div>
+            <div class="profile-tags">
+              <span>Casablanca</span><span>Hybride</span><span>12–16k DH</span>
+            </div>
+          </div>
+          <div class="profile-ping"></div>
+        </div>
+
+        <!-- animated connection beam -->
+        <svg class="beam-svg" viewBox="0 0 600 640" preserveAspectRatio="none" aria-hidden="true">
+          <path id="beamPath" d="M 110 120 C 260 180, 340 460, 490 520" fill="none" stroke="url(#beamGrad)" stroke-width="2.5" stroke-dasharray="8 10" class="beam-path" />
+          <defs>
+            <linearGradient id="beamGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#22d3ee" />
+              <stop offset="100%" stop-color="#a78bfa" />
+            </linearGradient>
+          </defs>
+        </svg>
+
+        <div class="match-score" id="matchScore">
+          <div class="match-score-ring">
+            <svg viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="52" class="ring-bg" />
+              <circle cx="60" cy="60" r="52" class="ring-fg" id="scoreRing" />
+            </svg>
+            <div class="match-score-value"><span id="scoreValue">0</span>%</div>
+          </div>
+          <div class="match-score-label">Score de matching</div>
+        </div>
+
+        <div class="float-chip chip-1">⚡ TF-IDF + Embeddings</div>
+        <div class="float-chip chip-2">🔒 L'IA ne décide jamais seule</div>
+        <div class="float-chip chip-3">🇲🇦 Made in Morocco</div>
+      </div>
+    </div>
+  </div>
+
+  <a href="#tech" class="scroll-hint" aria-label="Défiler">
+    <span class="mouse"><span class="wheel"></span></span>
+    Défiler
+  </a>
+</section>
+
+<!-- ===== MARQUEE BAND ===== -->
+<div class="marquee-band" aria-hidden="true">
+  <div class="marquee-track">
+    <div class="marquee-chunk">
+      <b>Matching sémantique</b><span class="sep">✦</span>
+      <span>Négociation assistée</span><span class="sep">✦</span>
+      <b>L'IA propose, l'humain décide</b><span class="sep">✦</span>
+      <span>Résumé d'accord PDF</span><span class="sep">✦</span>
+      <b>Données chiffrées</b><span class="sep">✦</span>
+      <span>Gratuit pour les candidats</span><span class="sep">✦</span>
+      <b>🇲🇦 Made in Morocco</b><span class="sep">✦</span>
+    </div>
+    <div class="marquee-chunk">
+      <b>Matching sémantique</b><span class="sep">✦</span>
+      <span>Négociation assistée</span><span class="sep">✦</span>
+      <b>L'IA propose, l'humain décide</b><span class="sep">✦</span>
+      <span>Résumé d'accord PDF</span><span class="sep">✦</span>
+      <b>Données chiffrées</b><span class="sep">✦</span>
+      <span>Gratuit pour les candidats</span><span class="sep">✦</span>
+      <b>🇲🇦 Made in Morocco</b><span class="sep">✦</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TECH SECTION ===== -->
+<section class="section tech-section" id="tech">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="section-kicker">Technologie</span>
+      <h2 class="section-title">Une IA qui <span class="gradient-text">assiste</span>,<br />jamais qui remplace.</h2>
+      <p class="section-sub">
+        Chaque couche technique de Wassel est pensée pour proposer, filtrer et révéler —
+        sans jamais prendre de décision à la place des humains.
+      </p>
+    </div>
+
+    <div class="tech-grid">
+      <article class="tech-card reveal tilt" data-delay="0">
+        <div class="tech-icon">🧠</div>
+        <h3>Matching sémantique</h3>
+        <p>TF-IDF et embeddings (sentence-transformers) comparent votre CV aux offres et questionnaires — au-delà des mots-clés.</p>
+        <div class="tech-meter"><span style="--w:92%"></span></div>
+        <div class="tech-meter-label">Précision de correspondance</div>
+      </article>
+
+      <article class="tech-card reveal tilt" data-delay="1">
+        <div class="tech-icon">⚖️</div>
+        <h3>Médiation équitable</h3>
+        <p>Dans la chambre de négociation, l'IA révèle la zone d'accord possible (point médian) mais n'impose jamais un chiffre.</p>
+        <div class="tech-meter"><span style="--w:100%"></span></div>
+        <div class="tech-meter-label">Décision finale : 100 % humaine</div>
+      </article>
+
+      <article class="tech-card reveal tilt" data-delay="2">
+        <div class="tech-icon">📄</div>
+        <h3>Résumé d'accord PDF</h3>
+        <p>Génération automatique d'un résumé de principe (reportlab / weasyprint) — une base, pas un contrat légal.</p>
+        <div class="tech-meter"><span style="--w:88%"></span></div>
+        <div class="tech-meter-label">Conformité droit du travail marocain</div>
+      </article>
+
+      <article class="tech-card reveal tilt" data-delay="3">
+        <div class="tech-icon">🔐</div>
+        <h3>Données protégées</h3>
+        <p>CV et prétentions salariales chiffrés, accès strictement limité aux entreprises matchées et abonnées.</p>
+        <div class="tech-meter"><span style="--w:96%"></span></div>
+        <div class="tech-meter-label">Confidentialité par défaut</div>
+      </article>
+    </div>
+
+    <!-- Technology image -->
+    <figure class="tech-figure reveal" data-delay="1">
+      <div class="tech-figure-frame tilt">
+        <img src="assets/tech.jpg" alt="Visualisation de la technologie IA derrière Wassel : réseau neuronal connectant profils et données" loading="lazy" />
+        <figcaption>
+          <span class="fig-line"></span>
+          Le cœur de Wassel : un réseau qui relie les profils aux opportunités.
+        </figcaption>
+      </div>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== PROCESS ===== -->
+<section class="section process-section" id="process">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="section-kicker">Processus</span>
+      <h2 class="section-title">De <span class="gradient-text">CV</span> à <span class="gradient-text">accord</span>, en 4 étapes.</h2>
+    </div>
+
+    <div class="steps">
+      <div class="step reveal" data-delay="0">
+        <div class="step-num">01</div>
+        <div class="step-icon">📤</div>
+        <h3>Déposez votre CV</h3>
+        <p>PDF ou Word, en 30 secondes. Puis un questionnaire court : poste, mode de travail, secteur, prétentions.</p>
+      </div>
+      <div class="step reveal" data-delay="1">
+        <div class="step-num">02</div>
+        <div class="step-icon">🎯</div>
+        <h3>Recevez vos matches</h3>
+        <p>L'IA classe les entreprises par compatibilité — vous choisissez celle que vous visez, ou visez large.</p>
+      </div>
+      <div class="step reveal" data-delay="2">
+        <div class="step-num">03</div>
+        <div class="step-icon">🤝</div>
+        <h3>Négociez sereinement</h3>
+        <p>Chambre de négociation : budget entreprise vs minimum candidat. L'IA révèle le point médian, vous décidez.</p>
+      </div>
+      <div class="step reveal" data-delay="3">
+        <div class="step-num">04</div>
+        <div class="step-icon">✍️</div>
+        <h3>Formalisez l'accord</h3>
+        <p>Résumé d'accord de principe généré en PDF — l'entreprise RH finalise le vrai contrat.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== NEGOTIATION DEMO ===== -->
+<section class="section nego-section" id="negotiation">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="section-kicker">Chambre de négociation</span>
+      <h2 class="section-title">L'IA <span class="gradient-text">révèle</span> la zone d'accord.<br />Vous signez — ou pas.</h2>
+      <p class="section-sub">Essayez la démo : entrez un budget entreprise et un minimum candidat.</p>
+    </div>
+
+    <div class="nego-demo reveal" data-delay="1">
+      <div class="nego-panel">
+        <div class="nego-side nego-company">
+          <div class="nego-side-head"><span class="nego-dot company-dot"></span> Entreprise</div>
+          <label for="negoCompany">Budget maximum</label>
+          <div class="nego-input-wrap">
+            <input type="range" id="negoCompany" min="4000" max="20000" step="500" value="10000" />
+            <output id="negoCompanyVal">10 000 DH</output>
+          </div>
+        </div>
+        <div class="nego-side nego-candidate">
+          <div class="nego-side-head"><span class="nego-dot candidate-dot"></span> Candidat</div>
+          <label for="negoCandidate">Minimum acceptable</label>
+          <div class="nego-input-wrap">
+            <input type="range" id="negoCandidate" min="4000" max="20000" step="500" value="7500" />
+            <output id="negoCandidateVal">7 500 DH</output>
+          </div>
+        </div>
+
+        <div class="nego-result" id="negoResult">
+          <div class="nego-zone" id="negoZone">
+            <div class="nego-zone-bar">
+              <div class="zone-overlap" id="zoneOverlap"></div>
+            </div>
+            <div class="nego-verdict" id="negoVerdict">—</div>
+            <div class="nego-median" id="negoMedian"></div>
+          </div>
+          <div class="nego-disclaimer">
+            L'IA ne fait que révéler la zone d'accord possible — elle n'impose jamais un chiffre.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRICING ===== -->
+<section class="section pricing-section" id="pricing">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="section-kicker">Tarifs</span>
+      <h2 class="section-title">Gratuit pour chercher.<br /><span class="gradient-text">Abonnement</span> pour recruter.</h2>
+      <p class="section-sub">Un candidat qui paie pour chercher un emploi abandonne — c'est pourquoi Wassel est gratuit côté candidat, pour toujours.</p>
+    </div>
+
+    <div class="pricing-grid">
+      <article class="price-card reveal" data-delay="0">
+        <div class="price-tag">Candidat</div>
+        <div class="price-value">0 <span>DH</span></div>
+        <div class="price-period">pour toujours, accès illimité</div>
+        <ul class="price-list">
+          <li>Dépôt de CV + questionnaire</li>
+          <li>Matching illimité par IA</li>
+          <li>Chambre de négociation</li>
+          <li>Résumé d'accord PDF</li>
+        </ul>
+        <a href="signup.html?role=candidat" class="btn btn-outline btn-block">Créer mon compte</a>
+      </article>
+
+      <article class="price-card price-card-featured reveal tilt" data-delay="1">
+        <div class="price-flag">Essai 10 jours inclus</div>
+        <div class="price-tag">Entreprise</div>
+        <div class="price-value">Sur devis<span>.</span></div>
+        <div class="price-period">abonnement après essai gratuit</div>
+        <ul class="price-list">
+          <li>Accès aux CV matchés</li>
+          <li>Contact : 1–2 candidats pendant l'essai</li>
+          <li>Filtrage par score de matching</li>
+          <li>Statistiques & tableau de bord</li>
+          <li>Annulation en 1 clic, à tout moment</li>
+        </ul>
+        <a href="signup.html?role=entreprise" class="btn btn-primary btn-block" data-magnetic>Démarrer l'essai gratuit →</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA ===== -->
+<section class="section cta-section">
+  <div class="container">
+    <div class="cta-box reveal">
+      <div class="cta-glow"></div>
+      <h2>Prêt à laisser l'IA vous <span class="gradient-text">relier</span> ?</h2>
+      <p>Rejoignez Wassel — gratuit pour les candidats, 10 jours d'essai pour les entreprises.</p>
+      <div class="hero-actions">
+        <a href="signup.html" class="btn btn-primary btn-lg" data-magnetic>Créer un compte <span class="btn-arrow">→</span></a>
+        <a href="#tech" class="btn btn-ghost btn-lg">Revoir la techno</a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">W</span>
+        <span class="brand-name">Wassel<span class="brand-dot">.</span></span>
+      </a>
+      <p>La plateforme de matching emploi par IA, conçue pour le Maroc.</p>
+    </div>
+    <div class="footer-cols">
+      <div class="footer-col">
+        <h4>Produit</h4>
+        <a href="#tech">Technologie</a>
+        <a href="#process">Processus</a>
+        <a href="#negotiation">Négociation</a>
+        <a href="#pricing">Tarifs</a>
+      </div>
+      <div class="footer-col">
+        <h4>Comptes</h4>
+        <a href="signup.html?role=candidat">Espace candidat</a>
+        <a href="signup.html?role=entreprise">Espace entreprise</a>
+        <a href="login.html">Connexion</a>
+      </div>
+      <div class="footer-col">
+        <h4>Légal</h4>
+        <a href="#">Confidentialité</a>
+        <a href="#">Conditions</a>
+        <a href="#">L'IA & la décision humaine</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container">
+      © 2026 Wassel — Prototype. L'IA assiste et propose ; elle ne décide ni ne signe jamais à la place des humains.
+    </div>
+  </div>
+</footer>
+
+<script src="assets/app.js"></script>
+</body>
+</html>
